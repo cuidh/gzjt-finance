@@ -1,0 +1,36 @@
+.header {
+    background-color: #409eff;
+    overflow: hidden;
+}
+
+.header p {
+    float: left;
+    height: 50px;
+    line-height: 50px;
+    color: #fff;
+    font-size: 20px;
+    margin-left: 50px;
+}
+
+.header div {
+    float: right;
+    height: 50px;
+    line-height: 50px;
+    margin-right: 150px;
+}
+
+.menu_box {
+    width: 150px;
+    background-color: #2d374b;
+    padding-top: 60px;
+    position: absolute;
+    top: 50px;
+    bottom: 0;
+}
+
+.menu_box > a {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}

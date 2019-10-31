@@ -1,0 +1,124 @@
+/*整体背景*/
+body {
+    background-color: #409eff;
+}
+
+/*左侧图片绝对定位垂直居中*/
+.banner {
+    width: 415px;
+    height: 355px;
+    position: absolute;
+    top: 50%;
+    margin-top: -180px;
+    left: 15%;
+    position: absolute;
+    background: url("../img/login_left_bg.png") 20% center no-repeat;
+    background-size: contain;
+}
+
+/*右侧登录面板绝对定位垂直居中*/
+.login_box {
+    width: 360px;
+    height: 350px;
+    position: absolute;
+    right: 15%;
+    top: 50%;
+    margin-top: -175px;
+    z-index: 100;
+    background: #fff;
+    box-shadow: 0 0 30px #6075ab;
+    border-radius: 3px;
+    text-align: center;
+}
+
+/*使用div显示logo图片*/
+.logo {
+    width: 74px;
+    height: 42px;
+    margin: 10px auto 5px auto;
+    background: url("../img/login_logo.png") center no-repeat;
+}
+
+/*使用p显示系统名称*/
+.logo_name {
+    text-align: center;
+    margin: 0 auto 30px auto;
+    font-size: 16px;
+}
+
+.help {
+    /*清除浮动，防止浮动之后父盒子高度为0，后面元素向上占据位置*/
+    overflow: hidden;
+}
+
+.help a {
+    font-size: 12px;
+}
+
+.help #apply_account {
+    float: left;
+    margin-left: 50px;
+}
+
+.help #forget_key {
+    float: right;
+    margin-right: 50px;
+}
+
+/*登录按钮*/
+.login-btn {
+    width: 277px;
+    height: 36px;
+    /*行高等于高度，文字内容垂直居中*/
+    line-height: 36px;
+    background: #349cf2;
+    color: #fff;
+    font-size: 14px;
+    border: antiquewhite;
+    border-radius: 20px;
+    outline: none;
+}
+
+.login_input {
+    /*子绝父相，方便图片定位*/
+    position: relative;
+    text-align: center;
+}
+
+/*账号密码输入框样式 圆角*/
+.login_input input {
+    height: 36px;
+    /*行高等于高度，文字垂直居中*/
+    line-height: 36px;
+    width: 277px;
+    padding-left: 35px;
+    margin: 10px auto;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    outline: none;
+}
+
+/*使用绝对定位的span显示图片*/
+.login_input span {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    position: absolute;
+    top: 10px;
+    left: 42px;
+}
+
+.span1 {
+    background: url("../img/login_user.png") 8px 10px no-repeat;
+}
+
+.span2 {
+    background: url("../img/login_key.png") 8px 10px no-repeat;
+}
+
+.login_error {
+    height: 40px;
+    line-height: 40px;
+    color: red;
+    font-size: 12px;
+}

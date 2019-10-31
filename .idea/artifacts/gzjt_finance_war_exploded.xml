@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="gzjt-finance:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/gzjt_finance_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="gzjt-finance/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="gzjt-finance" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="jdbc" />
+          <element id="library" level="project" name="common" />
+          <element id="library" level="module" name="JUnit4" module-name="gzjt-finance" />
+          <element id="library" level="project" name="jackson-2.2.3" />
+          <element id="library" level="project" name="mybatis-3.5.2" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

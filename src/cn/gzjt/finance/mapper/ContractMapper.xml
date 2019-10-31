@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gzjt.finance.mapper.ContractMapper">
+
+    <resultMap id="ContractResultMap" type="cn.gzjt.finance.domain.Contract">
+        <id property="id" column="id"/>
+        <result property="number" column="number"/>
+        <result property="type" column="type"/>
+        <result property="state" column="state"/>
+        <result property="price" column="price"/>
+        <result property="donePayRate" column="done_pay_rate"/>
+        <result property="payRate" column="pay_rate"/>
+        <result property="qualityDepositRate" column="quality_deposit_rate"/>
+        <result property="qualityPeriod" column="quality_period"/>
+        <result property="completionDate" column="completion_date"/>
+        <result property="qualityFixPay" column="quality_fix_pay"/>
+        <result property="auditPrice" column="audit_price"/>
+        <result property="finalAuditPrice" column="final_audit_price"/>
+        <result property="signDate" column="sign_date"/>
+        <result property="note" column="note"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="approvalSum" column="approval_sum"/>
+        <result property="paySum" column="pay_sum"/>
+        <result property="billSum" column="bill_sum"/>
+        <association property="project" column="project_id"
+                     select="cn.gzjt.finance.mapper.SubProjectMapper.getSubProject"/>
+        <association property="partyA" column="party_a"
+                     select="cn.gzjt.finance.mapper.OrgEntityMapper.getOrgEntity"/>
+        <association property="partyB" column="party_b"
+                     select="cn.gzjt.finance.mapper.OrgEntityMapper.getOrgEntity"/>
+    </resultMap>
+
+    <select id="getById" parameterType="int" resultMap="ContractResultMap">
+        select * from t_contract where id = #{id}
+    </select>
+
+    <select id="getByNumber" parameterType="string" resultMap="ContractResultMap">
+        select * from t_contract where number = #{number}
+    </select>
+
+    <select id="getAllContract" resultMap="ContractResultMap">
+        select * from t_contract ORDER BY create_time DESC
+    </select>
+
+    <select id="getByLikeNumberOrProject" parameterType="string" resultMap="ContractResultMap">
+    select * from
+        (select c.*, p.`number` as p_number, p.`name` as p_name from t_contract c, t_sub_project p where c.`project_id` = p.`id`) temp
+    where
+        number like concat('%', #{key},'%') or p_name like concat('%', #{key},'%') or p_number like concat('%', #{key},'%')
+    ORDER BY create_time DESC
+    </select>
+
+    <select id="getAllContractCount" resultType="int">
+        select count(*) from t_contract
+    </select>
+
+    <select id="getByLikeNumberOrProjectCount" parameterType="string" resultType="int">
+    select count(*) from
+        (select c.*, p.`number` as p_number, p.`name` as p_name from t_contract c, t_sub_project p where c.`project_id` = p.`id`) temp
+    where
+        number like concat('%', #{key},'%') or p_name like concat('%', #{key},'%') or p_number like concat('%', #{key},'%')
+    </select>
+
+    <insert id="insert" parameterType="contract" useGeneratedKeys="true" keyProperty="id">
+        insert into t_contract (number, type, price, pay_rate, quality_deposit_rate, quality_period,
+            completion_date, quality_fix_pay,audit_price, project_id, party_a, party_b, sign_date,
+            note, create_by, state, done_pay_rate, final_audit_price)
+        values
+            (#{number}, #{type}, #{price}, #{payRate}, #{qualityDepositRate}, #{qualityPeriod}, #{completionDate}
+            , #{qualityFixPay}, #{auditPrice}, #{project.id}, #{partyA.id}, #{partyB.id}, #{signDate}, #{note}
+            , #{createBy}, #{state}, #{donePayRate}, #{finalAuditPrice})
+    </insert>
+
+    <update id="update" parameterType="contract">
+        update t_contract set
+            type = #{type}, price = #{price}, pay_rate = #{payRate},
+            quality_deposit_rate = #{qualityDepositRate}, quality_period = #{qualityPeriod}, completion_date = #{completionDate},
+            quality_fix_pay = #{qualityFixPay}, audit_price = #{auditPrice}, project_id = #{project.id},
+            party_a = #{partyA.id}, party_b = #{partyB.id}, sign_date = #{signDate},
+            note = #{note}, create_by = #{createBy}, state = #{state},
+            done_pay_rate = #{donePayRate}, final_audit_price = #{finalAuditPrice}
+        where
+            number = #{number}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        delete from t_contract where id = #{id}
+    </delete>
+
+    <update id="updateApprovalSum">
+        update t_contract set
+            approval_sum = IFNULL(approval_sum, 0) + #{appendApproval}
+        where
+            id = #{id}
+    </update>
+
+    <update id="updatePaySum">
+        update t_contract set
+            pay_sum = IFNULL(pay_sum, 0) + #{appendPay}
+        where
+            id = #{id}
+    </update>
+
+    <update id="updateBillSum">
+        update t_contract set
+            bill_sum = IFNULL(bill_sum, 0) + #{appendBill}
+        where
+            id = #{id}
+    </update>
+</mapper>

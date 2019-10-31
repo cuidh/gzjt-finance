@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" build-on-make="true" name="finance">
+    <output-path>$PROJECT_DIR$/out/artifacts/finance</output-path>
+    <root id="archive" name="finance.war">
+      <element id="artifact" artifact-name="gzjt-finance:war exploded" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="mybatis-3.5.2" />
+          <element id="library" level="project" name="jackson-2.2.3" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

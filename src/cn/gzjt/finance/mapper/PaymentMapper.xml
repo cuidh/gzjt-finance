@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gzjt.finance.mapper.PaymentMapper">
+
+    <resultMap id="PaymentResultMap" type="cn.gzjt.finance.domain.Payment">
+        <id property="id" column="id"/>
+        <result property="number" column="number"/>
+        <result property="amount" column="amount"/>
+        <result property="note" column="note"/>
+        <result property="createBy" column="create_by"/>
+        <result property="tradeTime" column="trade_time"/>
+        <result property="fromAccount" column="from_account"/>
+        <result property="toAccount" column="to_account"/>
+        <result property="shouldAmount" column="should_amount"/>
+        <result property="cutAmount" column="cut_amount"/>
+        <result property="billAmount" column="bill_amount"/>
+        <result property="cutNote" column="cut_note"/>
+        <association property="contract" column="contract_id"
+                     select="cn.gzjt.finance.mapper.ContractMapper.getById"/>
+        <association property="from" column="from"
+                     select="cn.gzjt.finance.mapper.OrgEntityMapper.getOrgEntity"/>
+        <association property="to" column="to"
+                     select="cn.gzjt.finance.mapper.OrgEntityMapper.getOrgEntity"/>
+    </resultMap>
+
+    <select id="getById" parameterType="int" resultMap="PaymentResultMap">
+        select * from t_payment where id = #{id}
+    </select>
+
+    <select id="getByNumber" parameterType="string" resultMap="PaymentResultMap">
+        select * from t_payment where number = #{number}
+    </select>
+
+    <select id="getAll" resultMap="PaymentResultMap">
+        select * from t_payment ORDER BY create_time DESC
+    </select>
+
+    <select id="getListByKey" parameterType="string" resultMap="PaymentResultMap">
+        select * from
+            (SELECT p.*, c.`number` AS c_number, c.`project_id` AS c_project, s.`number` AS s_number, s.`name` AS s_name
+            FROM t_payment p, t_contract c, t_sub_project s
+            WHERE p.`contract_id` = c.`id` AND c.`project_id` = s.`id`) temp
+        where
+            temp.number like concat('%',#{key},'%') or temp.c_number like concat('%',#{key},'%')
+            or temp.s_number like concat('%',#{key},'%') or temp.s_name like concat('%',#{key},'%')
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="getAllCount" resultType="int">
+        select count(*) from t_payment
+    </select>
+
+    <select id="getListByKeyCount" parameterType="string" resultType="int">
+        select count(*) from
+            (SELECT p.*, c.`number` AS c_number, c.`project_id` AS c_project, s.`number` AS s_number, s.`name` AS s_name
+            FROM t_payment p, t_contract c, t_sub_project s
+            WHERE p.`contract_id` = c.`id` AND c.`project_id` = s.`id`) temp
+        where
+            temp.number like concat('%',#{key},'%') or temp.c_number like concat('%',#{key},'%')
+            or temp.s_number like concat('%',#{key},'%') or temp.s_name like concat('%',#{key},'%')
+    </select>
+
+    <insert id="insert" parameterType="payment" useGeneratedKeys="true" keyProperty="id">
+        insert into t_payment
+            (number, amount, `from`, `to`, from_account, to_account, contract_id, trade_time, create_by,
+            should_amount, cut_amount, cut_note, bill_amount)
+        values
+            (#{number}, #{amount}, #{from.id}, #{to.id}, #{fromAccount}, #{toAccount}, #{contract.id},
+            #{tradeTime}, #{createBy}, #{shouldAmount}, #{cutAmount}, #{cutNote}, #{billAmount})
+    </insert>
+
+    <delete id="deleteById" parameterType="int">
+        delete from t_payment where id = #{id}
+    </delete>
+</mapper>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gzjt.finance.mapper.UserMapper">
+
+    <resultMap id="UserResultMap" type="cn.gzjt.finance.domain.User">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="password" column="password"/>
+        <result property="realName" column="real_name"/>
+        <result property="gender" column="gender"/>
+        <result property="mail" column="mail"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="createTime" column="create_time"/>
+        <association property="department" column="dept_id"
+                     select="cn.gzjt.finance.mapper.DepartmentMapper.getDepartment"/>
+    </resultMap>
+
+    <select id="getById" parameterType="int" resultMap="UserResultMap">
+        select * from t_user where id = #{id}
+    </select>
+
+    <select id="getByKey" parameterType="string" resultMap="UserResultMap">
+        select * from t_user where name = #{key}
+    </select>
+
+    <select id="getAllList" resultMap="UserResultMap">
+        select * from t_user
+    </select>
+
+    <select id="getAllListCount" resultType="int">
+        select count(*) from t_user
+    </select>
+
+    <select id="getListByKey" parameterType="string" resultMap="UserResultMap">
+        select * from t_user where name like concat('%', #{key}, '%')
+    </select>
+
+    <select id="getListByKeyCount" parameterType="string" resultType="int">
+        select count(*) from t_user where name like concat('%', #{key}, '%')
+    </select>
+
+    <insert id="insert" parameterType="user" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user (name, password, real_name, dept_id)
+        values (#{name}, #{password}, #{realName}, #{department.id})
+    </insert>
+
+    <update id="updatePassword">
+    update
+        t_user
+    set
+        password = #{password}
+    where
+        id = #{id}
+</update>
+
+    <delete id="delete">
+        delete from t_user where id = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gzjt.finance.mapper.OrgEntityMapper">
+    <select id="getOrgEntity" parameterType="int" resultType="cn.gzjt.finance.domain.OrgEntity">
+        select * from t_entity where id = #{id}
+    </select>
+    <select id="getByName" parameterType="string" resultType="cn.gzjt.finance.domain.OrgEntity">
+        select * from t_entity where name = #{name}
+    </select>
+    <insert id="insert" parameterType="orgEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into t_entity (name, credit_code, adress, bank_account, note, is_internal, create_by)
+        values (#{name}, #{creditCode}, #{adress}, #{bankAccount}, #{note}, #{isInternal}, #{createBy})
+    </insert>
+    <update id="updateBankAccount">
+        update t_entity set bank_account = #{bankAccount} where id = #{id}
+    </update>
+</mapper>

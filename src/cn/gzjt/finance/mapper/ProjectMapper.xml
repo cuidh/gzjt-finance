@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gzjt.finance.mapper.ProjectMapper">
+
+    <resultMap id="ProjectResultMap" type="cn.gzjt.finance.domain.Project">
+        <id property="id" column="id"/>
+        <result property="number" column="number"/>
+        <result property="name" column="name"/>
+        <result property="note" column="note"/>
+        <result property="createBy" column="create_By"/>
+        <result property="createTime" column="create_time"/>
+        <association property="ownerObject" column="owner"
+                     select="cn.gzjt.finance.mapper.OrgEntityMapper.getOrgEntity"/>
+    </resultMap>
+
+    <select id="getById" parameterType="int" resultMap="ProjectResultMap">
+        select * from t_main_project where id = #{id}
+    </select>
+
+    <select id="getByName" parameterType="string" resultMap="ProjectResultMap">
+        select * from t_main_project where name = #{name}
+    </select>
+
+    <select id="getByNumber" parameterType="string" resultMap="ProjectResultMap">
+        select * from t_main_project where number = #{number}
+    </select>
+
+    <select id="getTotalCount" resultType="int">
+        select count(*) from t_main_project
+    </select>
+
+    <select id="getLikeTotalCount" resultType="int">
+        select count(*) from t_main_project where number like concat('%', #{key},'%') or name like concat('%', #{key},'%')
+    </select>
+
+    <insert id="insert" parameterType="project" useGeneratedKeys="true" keyProperty="id">
+        insert into t_main_project (name, number, owner, note, create_by)
+        values (#{name}, #{number}, #{ownerObject.id}, #{note}, #{createBy})
+    </insert>
+
+    <select id="getAllProjects" resultMap="ProjectResultMap">
+        select * from t_main_project ORDER BY create_time DESC
+    </select>
+
+    <select id="getByNameOrNumber" parameterType="string" resultMap="ProjectResultMap">
+        select * from t_main_project where number like concat('%', #{key},'%') or name like concat('%', #{key},'%') ORDER BY create_time DESC
+    </select>
+
+    <select id="getProjectByPage" resultMap="ProjectResultMap">
+        select * from t_main_project ORDER BY create_time DESC
+    </select>
+
+    <select id="getProjectByPageAndKey" resultMap="ProjectResultMap">
+        select * from t_main_project where number like concat('%', #{key},'%') or name like concat('%', #{key},'%') ORDER BY create_time DESC
+    </select>
+
+    <delete id="deleteByNumber" parameterType="string">
+        delete from t_main_project where number = #{number}
+    </delete>
+</mapper>

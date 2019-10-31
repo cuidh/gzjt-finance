@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gzjt.finance.mapper.SubProjectMapper">
+
+    <resultMap id="SubProjectResultMap" type="cn.gzjt.finance.domain.SubProject">
+        <id property="id" column="id"/>
+        <result property="number" column="number"/>
+        <result property="name" column="name"/>
+        <result property="note" column="note"/>
+        <result property="createBy" column="create_By"/>
+        <result property="createTime" column="create_time"/>
+        <association property="owner" column="owner"
+                     select="cn.gzjt.finance.mapper.OrgEntityMapper.getOrgEntity"/>
+        <association property="parentProject" column="main_pid"
+                     select="cn.gzjt.finance.mapper.ProjectMapper.getById"/>
+    </resultMap>
+
+    <select id="getSubProject" parameterType="int" resultMap="SubProjectResultMap">
+        select * from t_sub_project where id = #{id}
+    </select>
+
+    <select id="getByName" parameterType="string" resultMap="SubProjectResultMap">
+        select * from t_sub_project where name = #{name}
+    </select>
+
+    <select id="getByNumber" parameterType="string" resultMap="SubProjectResultMap">
+        select * from t_sub_project where number = #{number}
+    </select>
+
+    <select id="getAllSubProjects" resultMap="SubProjectResultMap">
+        select * from t_sub_project ORDER BY create_time DESC
+    </select>
+
+    <select id="getBySubKey" parameterType="string" resultMap="SubProjectResultMap">
+        select * from t_sub_project where name like concat('%', #{key},'%') or number like concat('%', #{key},'%') ORDER BY create_time DESC
+    </select>
+
+    <select id="getByMainKey" parameterType="string" resultMap="SubProjectResultMap">
+        select * from
+        (select sub.*, main.number as p_number, main.name as p_name from t_sub_project sub, t_main_project main where sub.`main_pid` = main.`id`) temp
+        where p_number like concat('%', #{key}, '%') or p_name like concat('%', #{key}, '%')
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="getByKey" resultMap="SubProjectResultMap">
+        select * from
+        (select sub.*, main.number as p_number, main.name as p_name from t_sub_project sub, t_main_project main where sub.`main_pid` = main.`id`) temp
+        where number like concat('%', #{subKey}, '%') or name like concat('%', #{subKey}, '%') or
+        p_number like concat('%', #{mainKey}, '%') or p_name like concat('%', #{mainKey}, '%')
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="getAllSubProjectCount" resultType="int">
+        select count(*) from t_sub_project
+    </select>
+
+    <select id="getBySubKeyCount" parameterType="string" resultType="int">
+        select count(*) from t_sub_project where name like concat('%', #{key},'%') or number like concat('%', #{key},'%')
+    </select>
+
+    <select id="getByMainKeyCount" parameterType="string" resultType="int">
+        select count(*) from
+        (select sub.*, main.number as p_number, main.name as p_name from t_sub_project sub, t_main_project main where sub.`main_pid` = main.`id`) temp
+        where p_number like concat('%', #{key}, '%') or p_name like concat('%', #{key}, '%')
+    </select>
+
+    <select id="getByKeyCount" resultType="int">
+        select count(*) from
+        (select sub.*, main.number as p_number, main.name as p_name from t_sub_project sub, t_main_project main where sub.`main_pid` = main.`id`) temp
+        where number like concat('%', #{subKey}, '%') or name like concat('%', #{subKey}, '%') or
+        p_number like concat('%', #{mainKey}, '%') or p_name like concat('%', #{mainKey}, '%')
+    </select>
+
+    <insert id="insert" parameterType="subProject" useGeneratedKeys="true" keyProperty="id">
+        insert into t_sub_project (name, number, main_pid, note, create_by)
+        values (#{name}, #{number}, #{parentProject.id}, #{note}, #{createBy})
+    </insert>
+
+    <delete id="deleteByNumber" parameterType="string">
+        delete from t_sub_project where number = #{number}
+    </delete>
+</mapper>

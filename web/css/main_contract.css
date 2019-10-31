@@ -1,0 +1,150 @@
+.content_stub_box {
+    position: absolute;
+    top: 50px;
+    left: 200px;
+    right: 0px;
+    bottom: 0px;
+    background-color: #fff;
+    padding-left: 30px;
+    padding-top: 30px;
+    overflow: auto;
+}
+
+.table_top_func {
+    border: #dddddd 1px solid;
+    padding: 10px;
+}
+
+.table_name {
+    font-size: 12px;
+    height: 35px;
+    line-height: 35px;
+    padding-left: 30px;
+    background-color: #eeeeee;
+    border: #dddddd 1px solid;
+    margin-top: 30px;
+}
+
+/*内容区底部分页栏目*/
+.nav_box {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.content_stub_box nav {
+    margin: 0 auto;
+}
+
+/*内容区标题*/
+.content_title_box h2 {
+    float: left;
+}
+
+.content_title_box ul {
+    float: left;
+    margin-left: 50px;
+}
+
+/*创建合同dialog*/
+#create_projct_stub {
+    width: 650px;
+    height: 600px;
+}
+
+.create_form {
+    margin-left: 30px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+/*#create_projct_cancel {*/
+/*    float: right;*/
+/*    margin-right: 30px;*/
+/*}*/
+
+/*#create_projct_confirm {*/
+/*    float: right;*/
+/*    margin-right: 20px;*/
+/*}*/
+
+.create_layer_cancel {
+    float: right;
+    margin-right: 30px;
+}
+
+.create_layer_confirm {
+    float: right;
+    margin-right: 20px;
+}
+
+.form_group {
+    margin-top: 10px;
+}
+
+.form_input {
+    width: 300px;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form_select {
+    display: inline-block !important;
+    width: 300px !important;
+    height: 34px !important;
+}
+
+.form_group > label {
+    display: inline-block;
+    width: 120px;
+    text-align: right;
+}
+
+/*已竣工字段默认隐藏*/
+/*.complete_group {*/
+/*    display: none;*/
+/*}*/
+
+/*时间选择控件*/
+.date_picker_label {
+    float: left;
+    display: inline-block;
+    height: 34px;
+    line-height: 34px;
+    margin-left: 0px;
+}
+
+.date_picker_div {
+    float: left;
+    width: 300px;
+    margin-left: 5px;
+}
+
+.date_picker_error_tip {
+    display: inline-block;
+    height: 34px;
+    line-height: 34px;
+    margin-left: 18px !important;
+}
+
+.input_error_tips {
+    color: red;
+    margin-left: 15px;
+    font-size: 12px
+}
+
+#create_approval_stub {
+    width: 620px;
+    height: 385px;
+}
+
+#create_payment_stub {
+    width: 630px;
+    height: 560px;
+}

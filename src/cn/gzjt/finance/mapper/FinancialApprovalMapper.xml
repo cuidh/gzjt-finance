@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gzjt.finance.mapper.FinancialApprovalMapper">
+
+    <resultMap id="ApprovalResultMap" type="cn.gzjt.finance.domain.FinancialApproval">
+        <id property="id" column="id"/>
+        <result property="number" column="number"/>
+        <result property="amount" column="amount"/>
+        <result property="date" column="date"/>
+        <result property="createBy" column="create_by"/>
+        <result property="note" column="note"/>
+        <association property="contract" column="contract_id"
+                     select="cn.gzjt.finance.mapper.ContractMapper.getById"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="financialApproval" useGeneratedKeys="true" keyProperty="id">
+        insert into t_financial_approval (id, number, amount, date, contract_id, create_by, note)
+        values (#{id}, #{number}, #{amount}, #{date}, #{contract.id}, #{createBy}, #{note})
+    </insert>
+
+    <select id="getListByContractCount" resultType="int">
+        select count(*) from t_financial_approval where contract_id = #{contractId}
+    </select>
+
+    <select id="getById" parameterType="int" resultMap="ApprovalResultMap">
+        select * from t_financial_approval where id = #{id}
+    </select>
+
+    <select id="getListByContract" resultMap="ApprovalResultMap">
+        select * from t_financial_approval where contract_id = #{contractId}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from t_financial_approval where id = #{id}
+    </delete>
+</mapper>
